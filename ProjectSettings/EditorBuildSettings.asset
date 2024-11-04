@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Photon/FusionAddons/XRShared/Demo/Scenes/DemoXRShared.unity
+    guid: 9be54aa7fff250242b645845364d14e7
+  - enabled: 1
+    path: Assets/Photon/FusionAddons/XRHandsSynchronization/Demo/Scenes/DemoXRHands.unity
+    guid: b3c90c54a9e514173be1079006f22c85
   - enabled: 1
     path: Assets/AtlasScene.unity
     guid: 826b959eecfca4a3cbc3a6a1b0a717c9
