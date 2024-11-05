@@ -2,9 +2,7 @@ mergeInto(LibraryManager.library, {
 
     PhotonVoice_WebAudioMicIn_Start: function(handle, deviceId, createCallback, dataCallback) {
         const deviceIdStr = deviceId ? UTF8ToString(deviceId) : "";
-        const workerFoo = // minification-friendly "to string conversion", comment out `s for dev
-        `
-        function() {
+        const workerFoo = function() {
             class MicCaptureProcessor extends AudioWorkletProcessor {
                 process(inputs, outputs, parameters) {
                     this.port.postMessage(inputs[0][0]);
@@ -13,7 +11,6 @@ mergeInto(LibraryManager.library, {
             }
             registerProcessor('photon-voice-mic-capture-processor', MicCaptureProcessor);
         }
-        `
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
@@ -65,32 +62,30 @@ mergeInto(LibraryManager.library, {
                             const worklet = new AudioWorkletNode(audioContext, 'photon-voice-mic-capture-processor');
 
                             source.connect(worklet);
-                            let ctx = [audioContext, url, false, worklet];
                             worklet.port.onmessage = function(e) {
-                                if (ctx[2]) return;
                                 const b = e.data;
-                                const ptr = _malloc(b.byteLength);
+                                const ptr = Module._malloc(b.byteLength);
 
-                                const dataHeap = new Float32Array(HEAPU8.buffer, ptr, b.length);
+                                const dataHeap = new Float32Array(HEAPU8.buffer, ptr, b.byteLength);
                                 dataHeap.set(b);
 
-                                {{{ makeDynCall('viii', 'dataCallback') }}}(handle, ptr, b.length);
-                                _free(ptr);
+                                Module.dynCall_viii(dataCallback, handle, ptr, b.length);
+                                Module._free(ptr);
                             }
                             audioContext.resume();
 
                             console.log('[PV] PhotonVoice_WebAudioMicIn_Start input created for handle ' + handle + ': s=' + audioContext.sampleRate + ' ch=' + 1);
 
                             Module.PhotonVoice_WebAudioMicIn_Inputs = Module.PhotonVoice_WebAudioMicIn_Inputs || new Map();
-                            Module.PhotonVoice_WebAudioMicIn_Inputs.set(handle, ctx);
-                            {{{ makeDynCall('viiii', 'createCallback') }}}(handle, 0, audioContext.sampleRate, 1);
+                            Module.PhotonVoice_WebAudioMicIn_Inputs.set(handle, [audioContext, url]);
+                            Module.dynCall_viiii(createCallback, handle, 0, audioContext.sampleRate, 1);
                         })
                         .catch(function(err) {
                             console.error('[PV] PhotonVoice_WebAudioMicIn_Start getUserMedia error: ' + err);
                             if (Module.PhotonVoice_WebAudioMicIn_InputsStopped) {
                                 Module.PhotonVoice_WebAudioMicIn_InputsStopped.delete(handle);
                             }
-                            {{{ makeDynCall('viiii', 'createCallback') }}}(handle, 2, 0, 0);
+                            Module.dynCall_viiii(createCallback, handle, 2, 0, 0);
                         });
                 },
                 function(err) {
@@ -98,13 +93,13 @@ mergeInto(LibraryManager.library, {
                     if (Module.PhotonVoice_WebAudioMicIn_InputsStopped) {
                         Module.PhotonVoice_WebAudioMicIn_InputsStopped.delete(handle);
                     }
-                     {{{ makeDynCall('viiii', 'createCallback') }}}(handle, 3, 0, 0);
+                     Module.dynCall_viiii(createCallback, handle, 3, 0, 0);
                 }
             );
 
         } else {
             console.error('[PV] PhotonVoice_WebAudioMicIn_Start error: ' + 'getUserMedia not supported on your browser!');
-            {{{ makeDynCall('viiii', 'createCallback') }}}(handle, 1, 0, 0);
+            Module.dynCall_viiii(createCallback, handle, 1, 0, 0);
         }
     },
 
@@ -113,8 +108,6 @@ mergeInto(LibraryManager.library, {
         if (ctx) {
             console.log('[PV] PhotonVoice_WebAudioMicIn_Stop deletes handle ' + handle);
             ctx[0].close();
-            ctx[2] = true;
-            ctx[3].disconnect();
             window.URL.revokeObjectURL(ctx[1]);
             Module.PhotonVoice_WebAudioMicIn_Inputs.delete(handle);
         } else {

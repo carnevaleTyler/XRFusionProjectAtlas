@@ -1,6 +1,8 @@
 using UnityEngine;
 
 namespace Fusion.Addons.Physics {
+  using Physics = UnityEngine.Physics;
+  
   /// <summary>
   /// NetworkRigidbody base class with generic definition for the Unity Rigidbody type (3d or 2d) and
   /// <see cref="RunnerSimulatePhysicsBase{TPhysicsScene}"/> type.
@@ -8,14 +10,14 @@ namespace Fusion.Addons.Physics {
   public abstract partial class NetworkRigidbody<RBType, PhysicsSimType> : NetworkRigidbodyBase, IStateAuthorityChanged, ISimulationExit
     where RBType          : Component
     where PhysicsSimType  : RunnerSimulatePhysicsBase {
-
+    
     /// <summary>
     /// Abstracted getter for cached Rigidbody component reference.
     /// </summary>
     public RBType Rigidbody => _rigidbody;
-
+    
     // Cached
-
+    
     /// <summary>
     /// Cached Rigidbody reference.
     /// </summary>
@@ -28,14 +30,14 @@ namespace Fusion.Addons.Physics {
     /// Stored original kinematic setting of the Rigidbody.
     /// </summary>
     protected bool           _originalIsKinematic;
-
+    
     /// <summary>
     /// Implementation of Unity Awake() method.
     /// </summary>
     protected virtual void Awake() {
       TryGetComponent(out _transform);
       TryGetComponent(out _rigidbody);
-
+      
       // Store the original state. Used in Despawn to reset for pooling.
       _originalIsKinematic = RBIsKinematic;
     }
@@ -56,9 +58,9 @@ namespace Fusion.Addons.Physics {
       if (IsProxy) {
         SetRBIsKinematic(_rigidbody, true);
       }
-
+      
       EnsureHasRunnerSimulatePhysics();
-      _clientPrediction = Runner.Topology != Topologies.Shared && (Runner.IsServer || _physicsSimulator.ClientPhysicsSimulation == ClientPhysicsSimulation.SimulateAlways);
+      _clientPrediction = Runner.Topology != Topologies.Shared && !_physicsSimulator.ForwardOnly;
 
       if (HasStateAuthority) {
         CopyToBuffer(false);
@@ -107,7 +109,7 @@ namespace Fusion.Addons.Physics {
         CopyToEngine(true);
       }
     }
-
+    
     /// <summary>
     /// Tests if the NetworkRunner has the applicable
     /// <see cref="RunnerSimulatePhysics3D"/> or <see cref="RunnerSimulatePhysics2D"/> component.
@@ -117,7 +119,7 @@ namespace Fusion.Addons.Physics {
       if (_physicsSimulator) {
         return;
       }
-
+      
       if (Runner.TryGetComponent(out PhysicsSimType existing)) {
         _physicsSimulator = existing;
         return ;
@@ -125,26 +127,26 @@ namespace Fusion.Addons.Physics {
 
       // For Shared Mode in Single Peer mode, we by default will let Unity handle physics.
 #if UNITY_2022_3_OR_NEWER
-      var timing = (typeof(RBType) == typeof(Rigidbody) ? (PhysicsTimings)UnityEngine.Physics.simulationMode : (PhysicsTimings)Physics2D.simulationMode);
+      var timing = (typeof(RBType) == typeof(Rigidbody) ? (PhysicsTimings)Physics.simulationMode : (PhysicsTimings)Physics2D.simulationMode);
 #else
-      var timing = (typeof(RBType) == typeof(Rigidbody) ? (PhysicsTimings)(UnityEngine.Physics.autoSimulation ? PhysicsTimings.FixedUpdate : PhysicsTimings.Script) : (PhysicsTimings)Physics2D.simulationMode);
+      var timing = (typeof(RBType) == typeof(Rigidbody) ? (PhysicsTimings)(Physics.autoSimulation ? PhysicsTimings.FixedUpdate : PhysicsTimings.Script) : (PhysicsTimings)Physics2D.simulationMode);
 #endif
-
+      
       // If all of the current mode settings allow for Unity to handled Physics(2D).Simulate() exit out
-      if (Application.isPlaying                                           &&
-          (bool)Runner                                                    &&
+      if (Application.isPlaying                                           && 
+          (bool)Runner                                                    && 
           Runner.IsRunning                                                &&
-          Runner.Config.PeerMode == NetworkProjectConfig.PeerModes.Single &&
+          Runner.Config.PeerMode == NetworkProjectConfig.PeerModes.Single && 
           (Runner.GameMode == GameMode.Shared)                            &&
           timing != PhysicsTimings.Script) {
         return;
       }
-
+      
       Debug.LogWarning($"No {typeof(PhysicsSimType).Name} present on NetworkRunner, but is required by {GetType().Name} on gameObject '{name}'. Adding one using default settings.");
       _physicsSimulator = Runner.gameObject.AddComponent<PhysicsSimType>();
       Runner.AddGlobal(_physicsSimulator);
     }
-
+    
     /// <summary>
     /// Developers can override this method to add handling for parent not existing locally.
     /// </summary>

@@ -29,9 +29,7 @@ mergeInto(LibraryManager.library, {
             // window.addEventListener('mousedown', Module.PhotonVoice_WebAudioAudioOut_Global.ResumeAudioContext);
             // window.addEventListener('touchstart', Module.PhotonVoice_WebAudioAudioOut_Global.ResumeAudioContext);
             
-            const playWorkerFoo = // minification-friendly "to string conversion", comment out `s for dev
-            `
-            function() {
+            const playWorkerFoo = function() {
                 var buffers; // array of ring buffers per channels
                 var bufferLen;
                 var channels;
@@ -105,7 +103,6 @@ mergeInto(LibraryManager.library, {
                 
                 registerProcessor('photon-voice-play-processor', PlayProcessor);
             }
-            `
 
             let ws = playWorkerFoo.toString();
             ws = ws.substring(ws.indexOf("{") + 1, ws.lastIndexOf("}"));

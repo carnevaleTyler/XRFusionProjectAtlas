@@ -44,12 +44,10 @@ namespace POpusCodec
 
             this.channels = (int)channels;
             this.frameSamples = frameSamples;
-#pragma warning disable CS0162 // Unreachable code detected (AsyncAPI is const)
             if (!Wrapper.AsyncAPI)
             {
                 this.buffer = new T[frameSamples * this.channels];
             }
-#pragma warning restore CS0162
             handle = Wrapper.opus_decoder_create(outputSamplingRateHz, channels);
 
             if (handle == IntPtr.Zero)
@@ -63,7 +61,6 @@ namespace POpusCodec
 
         protected void decodePacket(FrameBuffer data, int decodeFEC, int channels, bool endOfStream)
         {
-#pragma warning disable CS0162 // Unreachable code detected (AsyncAPI is const)
             if (Wrapper.AsyncAPI)
             {
                 if (TisFloat)
@@ -87,7 +84,6 @@ namespace POpusCodec
 
                 procOutput(this.buffer, endOfStream);
             }
-#pragma warning restore CS0162
         }
 
         protected void procOutput(T[] buffer, bool endOfStream)

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Fusion.Addons.Physics {
-
+  
   /// <summary>
   /// Fusion synchronization component for Unity Rigidbody2D.
   /// </summary>
@@ -35,7 +35,7 @@ namespace Fusion.Addons.Physics {
     /// <inheritdoc/>
     protected override bool GetRBIsKinematic(Rigidbody2D rb) {
       return rb.isKinematic;
-    }
+    }    
     /// <inheritdoc/>
     protected override void SetRBIsKinematic(Rigidbody2D rb, bool kinematic) {
       if (rb.isKinematic != kinematic) {
@@ -55,7 +55,7 @@ namespace Fusion.Addons.Physics {
     /// <inheritdoc/>
     protected override void ApplyRBPositionRotation(Rigidbody2D rb, Vector3 pos, Quaternion rot) {
       rb.position = pos;
-      rb.rotation = rot.eulerAngles.z;
+      rb.rotation = rot.eulerAngles.z;   
     }
 
     /// <inheritdoc/>
@@ -73,7 +73,7 @@ namespace Fusion.Addons.Physics {
     protected override void SetRBConstraints(Rigidbody2D rb, int constraints) {
       rb.constraints = (RigidbodyConstraints2D)constraints;
     }
-
+    
     /// <inheritdoc/>
     protected override void CaptureExtras(Rigidbody2D rb, ref NetworkRBData data) {
       data.Mass              = rb.mass;
@@ -92,7 +92,7 @@ namespace Fusion.Addons.Physics {
       rb.angularVelocity = data.AngularVelocity.Z;
       rb.gravityScale    = data.GravityScale2D;
     }
-
+    
     /// <inheritdoc/>
     public override void ResetRigidbody() {
       base.ResetRigidbody();
@@ -119,7 +119,7 @@ namespace Fusion.Addons.Physics {
       var angularVel = rb.angularVelocity;
       return angularVel * angularVel <= Physics2D.angularSleepTolerance * Physics2D.angularSleepTolerance;
     }
-
+    
     /// <inheritdoc/>
     protected override bool IsStateBelowSleepingThresholds(NetworkRBData data) {
       // Linear threshold

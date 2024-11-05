@@ -12,19 +12,25 @@ EditorBuildSettings:
     path: Assets/Photon/FusionAddons/XRShared/Demo/Scenes/DemoXRShared.unity
     guid: 9be54aa7fff250242b645845364d14e7
   - enabled: 1
+    path: Assets/metastickynotes.unity
+    guid: 4b2e0989c2801364b808ec6531eb1895
+  - enabled: 1
+    path: Assets/Scenes/StickyNotesCrossplatformRelocation.unity
+    guid: de87a8b9cbb286848874dad2116ec103
+  - enabled: 1
     path: Assets/Photon/FusionAddons/XRHandsSynchronization/Demo/Scenes/DemoXRHands.unity
     guid: b3c90c54a9e514173be1079006f22c85
   - enabled: 1
     path: Assets/AtlasScene.unity
     guid: 826b959eecfca4a3cbc3a6a1b0a717c9
   m_configObjects:
-    UnityEditor.XR.VisionOS.VisionOSSettings: {fileID: 11400000, guid: 65aecbc475a484af99bf300d1724b27a,
+    UnityEditor.XR.VisionOS.VisionOSSettings: {fileID: 11400000, guid: c8e2318667699344287b85fce554f3f1,
       type: 2}
-    com.unity.polyspatial.xr.xr_settings: {fileID: 11400000, guid: 7c744b565fcfb4d84ab13354b0bb2185,
+    com.unity.polyspatial.xr.xr_settings: {fileID: 11400000, guid: acd00517c6ded4021b4e1a68c886ddba,
       type: 2}
-    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 73fe7eecfa7334625b83c01ce86b6c4d,
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 1cae0f2f9aaef464c8ed71b38352cd21,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5ddb96d4c936f43e0a2d03ee21e3065b,
       type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: f5c37ddb8794c43f4aea025aee00702f,
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: a5854d47103f9204bb8283aa6df2affc,
       type: 2}

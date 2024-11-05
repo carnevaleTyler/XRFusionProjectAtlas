@@ -3,7 +3,7 @@ namespace Fusion.Addons.Physics.Editor
 	using System;
 	using UnityEngine;
 	using UnityEditor;
-
+	/*
 	[CustomPropertyDrawer(typeof(ClientPhysicsSimulation))]
 	public sealed class ClientPhysicsSimulationDrawer : PropertyDrawer
 	{
@@ -40,5 +40,5 @@ namespace Fusion.Addons.Physics.Editor
 
 			EditorGUILayout.Space(4);
 		}
-	}
+	}*/
 }

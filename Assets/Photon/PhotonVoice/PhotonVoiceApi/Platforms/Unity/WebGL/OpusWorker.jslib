@@ -21,15 +21,15 @@ mergeInto(LibraryManager.library, {
                 Module.PhotonVoice_JS_Global.workerPreInitQueue = new Array();
             } else {
                 const b = e.data.packet;
-                const ptr = _malloc(b.byteLength);
+                const ptr = Module._malloc(b.byteLength);
                 if (e.data.decode) {
                     HEAPF32.set(b, ptr / 4);
-                    {{{ makeDynCall('viiii', 'decoderDataCallback') }}}(e.data.stream, ptr, b.length, e.data.eos);
+                    Module.dynCall_viiii(decoderDataCallback, e.data.stream, ptr, b.length, e.data.eos);
                 } else {
                     HEAPU8.set(b, ptr);
-                    {{{ makeDynCall('viii', 'encoderDataCallback') }}}(e.data.stream, ptr, b.length);
+                    Module.dynCall_viii(encoderDataCallback, e.data.stream, ptr, b.length);
                 }
-                _free(ptr);
+                Module._free(ptr);
             }
         };
 

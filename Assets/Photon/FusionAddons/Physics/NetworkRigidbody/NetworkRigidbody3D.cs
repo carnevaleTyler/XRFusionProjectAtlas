@@ -1,6 +1,9 @@
+
 using UnityEngine;
 
 namespace Fusion.Addons.Physics {
+  using Physics = UnityEngine.Physics;
+  
   /// <summary>
   /// Fusion synchronization component for Unity Rigidbody.
   /// </summary>
@@ -24,28 +27,28 @@ namespace Fusion.Addons.Physics {
       get => _rigidbody.isKinematic;
       set => _rigidbody.isKinematic = value;
     }
-
+    
     /// <inheritdoc/>
     protected override void Awake() {
       base.Awake();
 #if UNITY_2022_3_OR_NEWER
-      AutoSimulateIsEnabled = UnityEngine.Physics.simulationMode != SimulationMode.Script;
+      AutoSimulateIsEnabled = Physics.simulationMode != SimulationMode.Script;
 #else
-      AutoSimulateIsEnabled = UnityEngine.Physics.autoSimulation;
+      AutoSimulateIsEnabled = Physics.autoSimulation;
 #endif
     }
-
+    
     /// <inheritdoc/>
     protected override bool GetRBIsKinematic(Rigidbody rb) {
       return rb.isKinematic;
-    }
+    }    
     /// <inheritdoc/>
     protected override void SetRBIsKinematic(Rigidbody rb, bool kinematic) {
       if (rb.isKinematic != kinematic) {
         rb.isKinematic = kinematic;
       }
     }
-
+    
     /// <inheritdoc/>
     protected override void CaptureRBPositionRotation(Rigidbody rb, ref NetworkRBData data) {
       data.TRSPData.Position = rb.position;
@@ -58,7 +61,7 @@ namespace Fusion.Addons.Physics {
     /// <inheritdoc/>
     protected override void ApplyRBPositionRotation(Rigidbody rb, Vector3 pos, Quaternion rot) {
       rb.position = pos;
-      rb.rotation = rot;
+      rb.rotation = rot;     
     }
     /// <inheritdoc/>
     protected override NetworkRigidbodyFlags GetRBFlags(Rigidbody rb) {
@@ -76,7 +79,7 @@ namespace Fusion.Addons.Physics {
     protected override void SetRBConstraints(Rigidbody rb, int constraints) {
       rb.constraints = (RigidbodyConstraints)constraints;
     }
-
+    
     /// <inheritdoc/>
     protected override void CaptureExtras(Rigidbody rb, ref NetworkRBData data) {
       data.Mass        = rb.mass;
@@ -91,7 +94,7 @@ namespace Fusion.Addons.Physics {
       rb.mass        = data.Mass;
       rb.drag        = data.Drag;
       rb.angularDrag = data.AngularDrag;
-
+      
       rb.velocity        = data.LinearVelocity;
       rb.angularVelocity = data.AngularVelocity;
     }
@@ -102,7 +105,7 @@ namespace Fusion.Addons.Physics {
       var rb = _rigidbody;
       if (!rb.isKinematic) {
         rb.velocity        = default;
-        rb.angularVelocity = default;
+        rb.angularVelocity = default;  
       }
     }
 
@@ -112,7 +115,7 @@ namespace Fusion.Addons.Physics {
     protected override void ForceRBSleep(Rigidbody rb) => rb.Sleep();
     /// <inheritdoc/>
     protected override void ForceRBWake( Rigidbody rb) => rb.WakeUp();
-
+    
     /// <inheritdoc/>
     protected override bool IsRigidbodyBelowSleepingThresholds(Rigidbody rb) {
       var energy  = rb.mass * rb.velocity.sqrMagnitude;
@@ -126,9 +129,9 @@ namespace Fusion.Addons.Physics {
       // Mass-normalized
       energy /= 2.0f * rb.mass;
 
-      return energy <= UnityEngine.Physics.sleepThreshold;
+      return energy <= Physics.sleepThreshold;
     }
-
+    
     /// <inheritdoc/>
     protected override bool IsStateBelowSleepingThresholds(NetworkRBData data) {
       var energy  = data.Mass * ((Vector3)data.LinearVelocity).sqrMagnitude;
@@ -142,7 +145,7 @@ namespace Fusion.Addons.Physics {
       // Mass-normalized
       energy /= 2.0f * data.Mass;
 
-      return energy <= UnityEngine.Physics.sleepThreshold;
+      return energy <= Physics.sleepThreshold;
     }
   }
 }

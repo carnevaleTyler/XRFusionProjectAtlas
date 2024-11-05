@@ -163,7 +163,6 @@ namespace Photon.Voice
             {
                 try
                 {
-#pragma warning disable CS0162 // Unreachable code detected (AsyncAPI is const)
                     if (Wrapper.AsyncAPI)
                     {
                         decoder = new OpusDecoderAsync<T>(output, (SamplingRate)i.SamplingRate, (Channels)i.Channels, i.FrameDurationSamples);
@@ -173,7 +172,6 @@ namespace Photon.Voice
                         decoder = new OpusDecoder<T>(output, (SamplingRate)i.SamplingRate, (Channels)i.Channels, i.FrameDurationSamples);
                     }
                     logger.Log(LogLevel.Info, "[PV] OpusCodec.Decoder created. Opus version " + Version + ", " + i);
-#pragma warning restore CS0162
                 }
                 catch (Exception e)
                 {

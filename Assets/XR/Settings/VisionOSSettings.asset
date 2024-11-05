@@ -13,12 +13,9 @@ MonoBehaviour:
   m_Name: VisionOSSettings
   m_EditorClassIdentifier: 
   m_AppMode: 1
-  m_HandsTrackingUsageDescription: 
-  m_WorldSensingUsageDescription: 
-  m_RuntimeSettings: {fileID: 11400000, guid: 4151efcb4611d420d83f53f925382ad3, type: 2}
-  m_UpperLimbVisibility: 0
+  m_HandsTrackingUsageDescription: Display hand and fingers to other users
+  m_WorldSensingUsageDescription: Detect common surfaces to share to others
+  m_RuntimeSettings: {fileID: 11400000, guid: 727c7551f3e6a47829f2f76178313c53, type: 2}
+  m_UpperLimbVisibility: 1
   m_FoveatedRendering: 1
-  m_VRImmersionStyle: 0
-  m_MRImmersionStyle: 0
   m_IL2CPPLargeExeWorkaround: 0
-  m_SkipPresentToMainScreen: 0

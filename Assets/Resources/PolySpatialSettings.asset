@@ -16,7 +16,7 @@ MonoBehaviour:
   m_EnableStatistics: 0
   m_ColliderSyncLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 257
   m_ParticleMode: 0
   m_TrackLightAndReflectionProbes: 1
   m_DisableTrackingMask:
@@ -37,21 +37,21 @@ MonoBehaviour:
   m_DeviceDisplayProviderParameters:
     dimensions: {x: 1830, y: 1600}
     leftEyePose:
-      position: {x: -0.033, y: -0.02, z: -0.01}
+      position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
     rightEyePose:
-      position: {x: -0.033, y: -0.02, z: -0.01}
+      position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
     leftProjectionHalfAngles:
-      left: -1.73205
+      left: -1
       right: 1
       top: 1
-      bottom: -1.19175
+      bottom: -1
     rightProjectionHalfAngles:
-      left: -1.73205
+      left: -1
       right: 1
       top: 1
-      bottom: -1.19175
+      bottom: -1
   m_MaterialSwapSets: []
   m_EnablePolySpatialRaycaster: 1
   m_SelectedValidationType: 1
